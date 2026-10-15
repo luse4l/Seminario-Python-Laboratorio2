@@ -14,6 +14,7 @@ class Producto(Base):
  nombre = Column(String(100), nullable = False) #limitamos el nombre a 100 caracteres
  precio = Column(Float, nullable = False)
  ventas = relationship("Venta", back_populates="producto")
+ carrito = relationship("Carrito", back_populates="producto")
 #Ponemos la clase venta entre comillas porque todavia no existe
 #back_populates apunta a producto de abajo. back_populates automatiza el trabajo de mantener las 
 #dos tablas conectadas en la memoria de Python
@@ -29,6 +30,16 @@ class Venta(Base):
     
     producto_id = Column(Integer, ForeignKey("productos.id"), nullable=False) #conexion cn el id producto
     producto = relationship("Producto", back_populates="ventas") #espejo de ventas en producto
+
+class Carrito(Base):
+   __tablename__ = 'carrito'
+
+   id = Column(Integer, primary_key=True, autoincrement=True)
+   
+   producto_id = Column(Integer, ForeignKey("productos.id"), nullable=False) #conexion cn el id producto
+   producto = relationship("Producto", back_populates="carrito")
+
+
 
 # Crear las tablas en el archivo si no existen
 Base.metadata.create_all(engine)
